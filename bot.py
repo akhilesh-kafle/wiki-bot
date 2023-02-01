@@ -21,17 +21,25 @@ async def on_ready():
 async def on_message(message):
     user_name = str(message.author)
     user_message = str(message.content)
-    print(user_name)
-    print(user_message)
+    #print(user_name)
+    #print(user_message)
     channel_name = str(message.channel.name)
-    print(channel_name)
-    if message.author == client.user:
-        return
+    #print(channel_name)
+
+    if channel_name == "wiki-bot":
+            if message.author == client.user:
+                return
+            else:
+                if user_message.lower()[0] == "!":
+                    try:
+                        summary = wikipedia.summary(user_message.lower()[1:],sentences="3")
+                        #print(summary)
+                        await message.channel.send(summary)
+                    except:
+                        await message.channel.send("Opps! Something went wrong.")
+                else:
+                    return
     else:
-        if user_message.lower()[0] == "!":
-            print(user_message.lower()[0])
-            summary = wikipedia.summary(user_message.lower()[1:],sentences="3")
-            print(summary)
-            await message.channel.send(summary)
+        return
 
 client.run(TOKEN)
